@@ -1,0 +1,11 @@
+# .air.toml
+
+[build]
+cmd = "go run ./cmd/main.go"
+bin = "tmp/main"
+delay = 1000 # ms
+include_ext = ["go"]
+exclude_dir = ["vendor", "tmp", "docs"]
+
+[log]
+time = true
