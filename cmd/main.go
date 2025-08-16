@@ -34,13 +34,31 @@ import (
 // @Success     200 {object} map[string]interface{}
 // @Router      /ping [get]
 func main() {
+	// Load environment variables
 	config.LoadEnv()
+
+	// Check for required environment variables
+	requiredEnvVars := []string{"PORT", "DB_URI", "JWT_SECRET"}
+	for _, envVar := range requiredEnvVars {
+		if config.GetEnv(envVar) == "" {
+			log.Fatalf("Required environment variable %s is not set", envVar)
+		}
+	}
+
+	// Connect to database
 	config.ConnectDB()
 
 	r := gin.Default()
 
 	routes.RegisterRoutes(r)
-	if err := r.Run(":" + config.GetEnv("PORT")); err != nil {
-		log.Fatalf("Error occured while starting the server:%v", err)
+
+	port := config.GetEnv("PORT")
+	if port == "" {
+		port = "8082" // fallback default
+	}
+
+	log.Printf("Starting server on port %s", port)
+	if err := r.Run(":" + port); err != nil {
+		log.Fatalf("Error occurred while starting the server: %v", err)
 	}
 }

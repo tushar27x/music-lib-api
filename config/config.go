@@ -12,9 +12,17 @@ import (
 var DB *gorm.DB
 
 func LoadEnv() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatalf("Error loading .env file:%v", err)
+	// Only try to load .env file in development
+	// In production, environment variables should be set directly
+	if os.Getenv("ENVIRONMENT") == "" || os.Getenv("ENVIRONMENT") == "development" {
+		err := godotenv.Load(".env")
+		if err != nil {
+			log.Printf("Warning: .env file not found (this is normal in production): %v", err)
+		} else {
+			log.Println("Loaded .env file successfully")
+		}
+	} else {
+		log.Println("Running in production mode - using environment variables directly")
 	}
 }
 
