@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:{{.PORT}}",
+    "host": "{{.PROD_HOST}}",
     "basePath": "/api",
     "paths": {
         "/albums/addAlbum": {

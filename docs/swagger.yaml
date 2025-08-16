@@ -218,7 +218,7 @@ definitions:
         example: "2023-01-01T00:00:00Z"
         type: string
     type: object
-host: localhost:{{.PORT}}
+host: '{{.PROD_HOST}}'
 info:
   contact:
     email: support@swagger.io
