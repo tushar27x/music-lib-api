@@ -20,7 +20,7 @@ COPY . .
 # Build the application with optimizations
 RUN CGO_ENABLED=0 GOOS=linux go build \
     -ldflags="-s -w -extldflags '-static'" \
-    -o music-api \
+    -o /app/music-api \
     ./cmd/main.go
 
 # Production stage
