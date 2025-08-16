@@ -20,7 +20,7 @@ import (
 // @Failure     400 {object} map[string]interface{}
 // @Failure     500 {object} map[string]interface{}
 // @Security    BearerAuth
-// @Router      /playlists/addPlaylist [post]
+// @Router      /playlists/ [post]
 func AddPlaylist(c *gin.Context) {
 	var input models.Playlist
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -82,7 +82,7 @@ func AddPlaylist(c *gin.Context) {
 // @Failure     400 {object} map[string]interface{}
 // @Failure     500 {object} map[string]interface{}
 // @Security    BearerAuth
-// @Router      /playlists/getAllPlaylists [get]
+// @Router      /playlists/ [get]
 func GetPlayList(c *gin.Context) {
 	var playlists []models.Playlist
 	userId, ok := c.MustGet("userId").(uint)

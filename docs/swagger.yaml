@@ -557,6 +557,65 @@ paths:
       summary: Health check endpoint
       tags:
       - health
+  /playlists/:
+    get:
+      description: Retrieve all playlists for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get all playlists
+      tags:
+      - playlists
+    post:
+      consumes:
+      - application/json
+      description: Create a new playlist with songs
+      parameters:
+      - description: Playlist data
+        in: body
+        name: playlist
+        required: true
+        schema:
+          $ref: '#/definitions/models.PlaylistCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.PlaylistResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Add a new playlist
+      tags:
+      - playlists
   /playlists/{id}:
     delete:
       description: Soft delete a specific playlist by its ID (songs remain unaffected)
@@ -672,66 +731,6 @@ paths:
       summary: Update playlist by ID
       tags:
       - playlists
-  /playlists/addPlaylist:
-    post:
-      consumes:
-      - application/json
-      description: Create a new playlist with songs
-      parameters:
-      - description: Playlist data
-        in: body
-        name: playlist
-        required: true
-        schema:
-          $ref: '#/definitions/models.PlaylistCreateRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.PlaylistResponse'
-        "400":
-          description: Bad Request
-          schema:
-            additionalProperties: true
-            type: object
-        "500":
-          description: Internal Server Error
-          schema:
-            additionalProperties: true
-            type: object
-      security:
-      - BearerAuth: []
-      summary: Add a new playlist
-      tags:
-      - playlists
-  /playlists/getAllPlaylists:
-    get:
-      description: Retrieve all playlists for the authenticated user
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            additionalProperties: true
-            type: object
-        "400":
-          description: Bad Request
-          schema:
-            additionalProperties: true
-            type: object
-        "500":
-          description: Internal Server Error
-          schema:
-            additionalProperties: true
-            type: object
-      security:
-      - BearerAuth: []
-      summary: Get all playlists
-      tags:
-      - playlists
   /playlists/search:
     get:
       description: Search playlists by name with fuzzy matching
@@ -775,6 +774,71 @@ paths:
       summary: Search playlists
       tags:
       - playlists
+  /songs/:
+    get:
+      description: Retrieve all songs for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get all songs
+      tags:
+      - songs
+    post:
+      consumes:
+      - application/json
+      description: Add a new song to the user's library
+      parameters:
+      - description: Song data
+        in: body
+        name: song
+        required: true
+        schema:
+          $ref: '#/definitions/models.SongCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Add a new song
+      tags:
+      - songs
   /songs/{id}:
     delete:
       description: Soft delete a specific song by its ID for the authenticated user
@@ -888,72 +952,6 @@ paths:
       security:
       - BearerAuth: []
       summary: Update song by ID
-      tags:
-      - songs
-  /songs/addSong:
-    post:
-      consumes:
-      - application/json
-      description: Add a new song to the user's library
-      parameters:
-      - description: Song data
-        in: body
-        name: song
-        required: true
-        schema:
-          $ref: '#/definitions/models.SongCreateRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            additionalProperties: true
-            type: object
-        "400":
-          description: Bad Request
-          schema:
-            additionalProperties: true
-            type: object
-        "403":
-          description: Forbidden
-          schema:
-            additionalProperties: true
-            type: object
-        "500":
-          description: Internal Server Error
-          schema:
-            additionalProperties: true
-            type: object
-      security:
-      - BearerAuth: []
-      summary: Add a new song
-      tags:
-      - songs
-  /songs/getAllSongs:
-    get:
-      description: Retrieve all songs for the authenticated user
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            additionalProperties: true
-            type: object
-        "400":
-          description: Bad Request
-          schema:
-            additionalProperties: true
-            type: object
-        "500":
-          description: Internal Server Error
-          schema:
-            additionalProperties: true
-            type: object
-      security:
-      - BearerAuth: []
-      summary: Get all songs
       tags:
       - songs
   /songs/search:

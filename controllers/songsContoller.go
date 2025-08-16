@@ -21,7 +21,7 @@ import (
 // @Failure     403 {object} map[string]interface{}
 // @Failure     500 {object} map[string]interface{}
 // @Security    BearerAuth
-// @Router      /songs/addSong [post]
+// @Router      /songs/ [post]
 func AddSong(c *gin.Context) {
 	var song models.Song
 
@@ -67,7 +67,7 @@ func AddSong(c *gin.Context) {
 // @Failure     400 {object} map[string]interface{}
 // @Failure     500 {object} map[string]interface{}
 // @Security    BearerAuth
-// @Router      /songs/getAllSongs [get]
+// @Router      /songs/ [get]
 func GetSongs(c *gin.Context) {
 	userId, ok := c.MustGet("userId").(uint)
 	if !ok {
