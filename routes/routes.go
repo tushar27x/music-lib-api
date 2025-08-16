@@ -2,11 +2,16 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/tushar27x/music-lib-api/controllers"
 	"github.com/tushar27x/music-lib-api/middlewares"
 )
 
 func RegisterRoutes(router *gin.Engine) {
+	// Swagger documentation
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	api := router.Group("/api")
 	{
 		api.GET("/ping", func(c *gin.Context) {

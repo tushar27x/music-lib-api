@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/tushar27x/music-lib-api/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -32,7 +31,7 @@ func ConnectDB() {
 		log.Fatalf("❌ Error connecting to DB:%s", err)
 	}
 
-	err = DB.AutoMigrate(&models.User{}, &models.Album{}, &models.Song{}, &models.Playlist{})
+	// err = DB.AutoMigrate(&models.User{}, &models.Album{}, &models.Song{}, &models.Playlist{})
 	if err != nil {
 		log.Fatalf("Error migrating models:%s", err)
 	}

@@ -8,6 +8,18 @@ import (
 	"github.com/tushar27x/music-lib-api/models"
 )
 
+// @Summary     Add a new song
+// @Description Add a new song to the user's library
+// @Tags        songs
+// @Accept      json
+// @Produce     json
+// @Param       song body models.SongCreateRequest true "Song data"
+// @Success     200 {object} map[string]interface{}
+// @Failure     400 {object} map[string]interface{}
+// @Failure     403 {object} map[string]interface{}
+// @Failure     500 {object} map[string]interface{}
+// @Security    BearerAuth
+// @Router      /songs/addSong [post]
 func AddSong(c *gin.Context) {
 	var song models.Song
 
@@ -45,6 +57,15 @@ func AddSong(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"song": song})
 }
 
+// @Summary     Get all songs
+// @Description Retrieve all songs for the authenticated user
+// @Tags        songs
+// @Produce     json
+// @Success     200 {object} map[string]interface{}
+// @Failure     400 {object} map[string]interface{}
+// @Failure     500 {object} map[string]interface{}
+// @Security    BearerAuth
+// @Router      /songs/getAllSongs [get]
 func GetSongs(c *gin.Context) {
 	userId, ok := c.MustGet("userId").(uint)
 	if !ok {

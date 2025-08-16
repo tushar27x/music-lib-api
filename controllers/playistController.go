@@ -8,6 +8,17 @@ import (
 	"github.com/tushar27x/music-lib-api/models"
 )
 
+// @Summary     Add a new playlist
+// @Description Create a new playlist with songs
+// @Tags        playlists
+// @Accept      json
+// @Produce     json
+// @Param       playlist body models.PlaylistCreateRequest true "Playlist data"
+// @Success     200 {object} models.PlaylistResponse
+// @Failure     400 {object} map[string]interface{}
+// @Failure     500 {object} map[string]interface{}
+// @Security    BearerAuth
+// @Router      /playlists/addPlaylist [post]
 func AddPlaylist(c *gin.Context) {
 	var input models.Playlist
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -61,6 +72,15 @@ func AddPlaylist(c *gin.Context) {
 	c.JSON(http.StatusOK, playlist)
 }
 
+// @Summary     Get all playlists
+// @Description Retrieve all playlists for the authenticated user
+// @Tags        playlists
+// @Produce     json
+// @Success     200 {object} map[string]interface{}
+// @Failure     400 {object} map[string]interface{}
+// @Failure     500 {object} map[string]interface{}
+// @Security    BearerAuth
+// @Router      /playlists/getAllPlaylists [get]
 func GetPlayList(c *gin.Context) {
 	var playlists []models.Playlist
 	userId, ok := c.MustGet("userId").(uint)

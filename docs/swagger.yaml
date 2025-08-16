@@ -1,0 +1,516 @@
+basePath: /api
+definitions:
+  models.AlbumCreateRequest:
+    description: Album creation request model
+    properties:
+      artist:
+        description: '@Description Album artist'
+        example: Pink Floyd
+        type: string
+      title:
+        description: '@Description Album title'
+        example: Dark Side of the Moon
+        type: string
+      year:
+        description: '@Description Release year'
+        example: 1973
+        type: integer
+    required:
+    - artist
+    - title
+    - year
+    type: object
+  models.AlbumResponse:
+    description: Album response model
+    properties:
+      artist:
+        description: '@Description Album artist'
+        example: Pink Floyd
+        type: string
+      created_at:
+        description: '@Description When the album was created'
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      id:
+        description: '@Description Unique identifier for the album'
+        example: 1
+        type: integer
+      songs:
+        description: '@Description Songs in the album'
+        items:
+          $ref: '#/definitions/models.SongResponse'
+        type: array
+      title:
+        description: '@Description Album title'
+        example: Dark Side of the Moon
+        type: string
+      updated_at:
+        description: '@Description When the album was last updated'
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      user_id:
+        description: '@Description User ID who owns the album'
+        example: 1
+        type: integer
+      year:
+        description: '@Description Release year'
+        example: 1973
+        type: integer
+    type: object
+  models.PlaylistCreateRequest:
+    type: object
+  models.PlaylistResponse:
+    description: Playlist response model
+    properties:
+      created_at:
+        description: '@Description When the playlist was created'
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      id:
+        description: '@Description Unique identifier for the playlist'
+        example: 1
+        type: integer
+      name:
+        description: '@Description Playlist name'
+        example: My Favorite Songs
+        type: string
+      songs:
+        description: '@Description Songs in the playlist'
+        items:
+          $ref: '#/definitions/models.SongResponse'
+        type: array
+      updated_at:
+        description: '@Description When the playlist was last updated'
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      userId:
+        description: '@Description User ID who owns the playlist'
+        example: 1
+        type: integer
+    type: object
+  models.SongCreateRequest:
+    description: Song creation request model
+    properties:
+      album_id:
+        description: '@Description Optional album ID the song belongs to'
+        example: 1
+        type: integer
+      duration:
+        description: '@Description Song duration in millseconds'
+        example: 175000
+        type: integer
+      title:
+        description: '@Description Song title'
+        example: Bohemian Rhapsody
+        type: string
+    required:
+    - duration
+    - title
+    type: object
+  models.SongResponse:
+    description: Song response model
+    properties:
+      album_id:
+        description: '@Description Optional album ID the song belongs to'
+        example: 1
+        type: integer
+      created_at:
+        description: '@Description When the song was created'
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      duration:
+        description: '@Description Song duration in milliseconds'
+        example: 175000
+        type: integer
+      id:
+        description: '@Description Unique identifier for the song'
+        example: 1
+        type: integer
+      title:
+        description: '@Description Song title'
+        example: Bohemian Rhapsody
+        type: string
+      updated_at:
+        description: '@Description When the song was last updated'
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      user_id:
+        description: '@Description User ID who owns the song'
+        example: 1
+        type: integer
+    type: object
+  models.UserLoginRequest:
+    description: Login request model
+    properties:
+      email:
+        description: '@Description User''s email address'
+        example: john@example.com
+        type: string
+      password:
+        description: '@Description User''s password'
+        example: password123
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  models.UserRegisterRequest:
+    description: Registration request model
+    properties:
+      email:
+        description: '@Description User''s email address'
+        example: john@example.com
+        type: string
+      name:
+        description: '@Description User''s full name'
+        example: John Doe
+        type: string
+      password:
+        description: '@Description User''s password'
+        example: password123
+        minLength: 6
+        type: string
+      role:
+        description: '@Description User''s role in the system'
+        example: artist
+        type: string
+    required:
+    - email
+    - name
+    - password
+    - role
+    type: object
+  models.UserResponse:
+    description: User response model (excludes password)
+    properties:
+      albums:
+        description: '@Description User''s albums'
+        items:
+          $ref: '#/definitions/models.AlbumResponse'
+        type: array
+      created_at:
+        description: '@Description When the user was created'
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      email:
+        description: '@Description User''s email address'
+        example: john@example.com
+        type: string
+      id:
+        description: '@Description Unique identifier for the user'
+        example: 1
+        type: integer
+      name:
+        description: '@Description User''s full name'
+        example: John Doe
+        type: string
+      role:
+        description: '@Description User''s role in the system'
+        example: artist
+        type: string
+      songs:
+        description: '@Description User''s songs'
+        items:
+          $ref: '#/definitions/models.SongResponse'
+        type: array
+      updated_at:
+        description: '@Description When the user was last updated'
+        example: "2023-01-01T00:00:00Z"
+        type: string
+    type: object
+host: localhost:{{.PORT}}
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: A RESTful API for managing music library with albums, songs, and playlists
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Music Library API
+  version: "1.0"
+paths:
+  /albums/addAlbum:
+    post:
+      consumes:
+      - application/json
+      description: Create a new album (artists only)
+      parameters:
+      - description: Album data
+        in: body
+        name: album
+        required: true
+        schema:
+          $ref: '#/definitions/models.AlbumCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.AlbumResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create a new album
+      tags:
+      - albums
+  /albums/getAllAlbums:
+    get:
+      description: Retrieve all albums for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.AlbumResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get all albums
+      tags:
+      - albums
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user and get JWT token
+      parameters:
+      - description: Login credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+      summary: User login
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user account
+      parameters:
+      - description: User registration data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserRegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Register a new user
+      tags:
+      - auth
+  /ping:
+    get:
+      description: Get server health status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Health check endpoint
+      tags:
+      - health
+  /playlists/addPlaylist:
+    post:
+      consumes:
+      - application/json
+      description: Create a new playlist with songs
+      parameters:
+      - description: Playlist data
+        in: body
+        name: playlist
+        required: true
+        schema:
+          $ref: '#/definitions/models.PlaylistCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.PlaylistResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Add a new playlist
+      tags:
+      - playlists
+  /playlists/getAllPlaylists:
+    get:
+      description: Retrieve all playlists for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get all playlists
+      tags:
+      - playlists
+  /songs/addSong:
+    post:
+      consumes:
+      - application/json
+      description: Add a new song to the user's library
+      parameters:
+      - description: Song data
+        in: body
+        name: song
+        required: true
+        schema:
+          $ref: '#/definitions/models.SongCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Add a new song
+      tags:
+      - songs
+  /songs/getAllSongs:
+    get:
+      description: Retrieve all songs for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get all songs
+      tags:
+      - songs
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

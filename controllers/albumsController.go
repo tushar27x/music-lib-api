@@ -9,6 +9,18 @@ import (
 	"gorm.io/gorm"
 )
 
+// @Summary     Create a new album
+// @Description Create a new album (artists only)
+// @Tags        albums
+// @Accept      json
+// @Produce     json
+// @Param       album body models.AlbumCreateRequest true "Album data"
+// @Success     201 {object} models.AlbumResponse
+// @Failure     400 {object} map[string]interface{}
+// @Failure     403 {object} map[string]interface{}
+// @Failure     500 {object} map[string]interface{}
+// @Security    BearerAuth
+// @Router      /albums/addAlbum [post]
 func CreateAlbum(c *gin.Context) {
 	var album models.Album
 
@@ -42,6 +54,15 @@ func CreateAlbum(c *gin.Context) {
 	c.JSON(http.StatusCreated, album)
 }
 
+// @Summary     Get all albums
+// @Description Retrieve all albums for the authenticated user
+// @Tags        albums
+// @Produce     json
+// @Success     200 {array} models.AlbumResponse
+// @Failure     400 {object} map[string]interface{}
+// @Failure     500 {object} map[string]interface{}
+// @Security    BearerAuth
+// @Router      /albums/getAllAlbums [get]
 func GetAlbums(c *gin.Context) {
 	userId, ok := c.MustGet("userId").(uint)
 	if !ok {

@@ -13,6 +13,16 @@ import (
 
 var jwtSecret = []byte(config.GetEnv("JWT_SECRET"))
 
+// @Summary     Register a new user
+// @Description Create a new user account
+// @Tags        auth
+// @Accept      json
+// @Produce     json
+// @Param       user body models.UserRegisterRequest true "User registration data"
+// @Success     201 {object} models.UserResponse
+// @Failure     400 {object} map[string]interface{}
+// @Failure     500 {object} map[string]interface{}
+// @Router      /auth/register [post]
 func Register(c *gin.Context) {
 	var user models.User
 
@@ -29,6 +39,17 @@ func Register(c *gin.Context) {
 	c.JSON(http.StatusCreated, user)
 }
 
+// @Summary     User login
+// @Description Authenticate user and get JWT token
+// @Tags        auth
+// @Accept      json
+// @Produce     json
+// @Param       credentials body models.UserLoginRequest true "Login credentials"
+// @Success     200 {object} map[string]interface{}
+// @Failure     400 {object} map[string]interface{}
+// @Failure     401 {object} map[string]interface{}
+// @Failure     404 {object} map[string]interface{}
+// @Router      /auth/login [post]
 func Login(c *gin.Context) {
 	var input struct {
 		Email    string `json:"email"`
