@@ -10,7 +10,7 @@
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host      {{.PROD_HOST}}
+// @host      independent-carlene-tushar27x-a3461680.koyeb.app
 // @BasePath  /api
 
 // @securityDefinitions.apikey BearerAuth

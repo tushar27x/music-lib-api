@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "{{.PROD_HOST}}",
+    "host": "independent-carlene-tushar27x-a3461680.koyeb.app",
     "basePath": "/api",
     "paths": {
         "/albums/addAlbum": {

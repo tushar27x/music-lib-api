@@ -744,7 +744,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "{{.PROD_HOST}}",
+	Host:             "independent-carlene-tushar27x-a3461680.koyeb.app",
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "Music Library API",
