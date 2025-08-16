@@ -27,22 +27,34 @@ func RegisterRoutes(router *gin.Engine) {
 		albums := api.Group("/albums")
 		albums.Use(middlewares.AuthMiddleware())
 		{
-			albums.GET("/getAllAlbums", controllers.GetAlbums)
-			albums.POST("/addAlbum", controllers.CreateAlbum)
+			albums.GET("/", controllers.GetAlbums)
+			albums.GET("/search", controllers.SearchAlbums)
+			albums.GET("/:id", controllers.GetAlbumByID)
+			albums.POST("/", controllers.CreateAlbum)
+			albums.PUT("/:id", controllers.UpdateAlbum)
+			albums.DELETE("/:id", controllers.DeleteAlbum)
 		}
 
 		songs := api.Group("/songs")
 		songs.Use(middlewares.AuthMiddleware())
 		{
-			songs.GET("/getAllSongs", controllers.GetSongs)
-			songs.POST("/addSong", controllers.AddSong)
+			songs.GET("/", controllers.GetSongs)
+			songs.GET("/search", controllers.SearchSongs)
+			songs.GET("/:id", controllers.GetSongByID)
+			songs.POST("/", controllers.AddSong)
+			songs.PUT("/:id", controllers.UpdateSong)
+			songs.DELETE("/:id", controllers.DeleteSong)
 		}
 
 		playlists := api.Group("/playlists")
 		playlists.Use(middlewares.AuthMiddleware())
 		{
-			playlists.GET("/getAllPlaylists", controllers.GetPlayList)
-			playlists.POST("/addPlaylist", controllers.AddPlaylist)
+			playlists.GET("/", controllers.GetPlayList)
+			playlists.GET("/search", controllers.SearchPlaylists)
+			playlists.GET("/:id", controllers.GetPlayListById)
+			playlists.POST("/", controllers.AddPlaylist)
+			playlists.PUT("/:id", controllers.UpdatePlaylist)
+			playlists.DELETE("/:id", controllers.DeletePlaylist)
 		}
 	}
 }

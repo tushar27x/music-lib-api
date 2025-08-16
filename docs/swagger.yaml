@@ -232,7 +232,33 @@ info:
   title: Music Library API
   version: "1.0"
 paths:
-  /albums/addAlbum:
+  /albums/:
+    get:
+      description: Retrieve all albums for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.AlbumResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get all albums
+      tags:
+      - albums
     post:
       consumes:
       - application/json
@@ -271,18 +297,167 @@ paths:
       summary: Create a new album
       tags:
       - albums
-  /albums/getAllAlbums:
-    get:
-      description: Retrieve all albums for the authenticated user
+  /albums/{id}:
+    delete:
+      description: Delete a specific album by its ID and all its songs (artists only)
+      parameters:
+      - description: Album ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/models.AlbumResponse'
-            type: array
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete album by ID
+      tags:
+      - albums
+    get:
+      description: Retrieve a specific album by its ID for the authenticated user
+      parameters:
+      - description: Album ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AlbumResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get album by ID
+      tags:
+      - albums
+    put:
+      consumes:
+      - application/json
+      description: Update a specific album by its ID (artists only)
+      parameters:
+      - description: Album ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated album data
+        in: body
+        name: album
+        required: true
+        schema:
+          $ref: '#/definitions/models.AlbumCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AlbumResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update album by ID
+      tags:
+      - albums
+  /albums/search:
+    get:
+      description: Search albums by title, artist, or year with fuzzy matching
+      parameters:
+      - description: Search query (searches title, artist, year)
+        in: query
+        name: q
+        type: string
+      - description: Search by title
+        in: query
+        name: title
+        type: string
+      - description: Search by artist
+        in: query
+        name: artist
+        type: string
+      - description: Search by year
+        in: query
+        name: year
+        type: integer
+      - description: 'Limit results (default: 20, max: 100)'
+        in: query
+        name: limit
+        type: integer
+      - description: 'Offset for pagination (default: 0)'
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
         "400":
           description: Bad Request
           schema:
@@ -295,7 +470,7 @@ paths:
             type: object
       security:
       - BearerAuth: []
-      summary: Get all albums
+      summary: Search albums
       tags:
       - albums
   /auth/login:
@@ -382,6 +557,121 @@ paths:
       summary: Health check endpoint
       tags:
       - health
+  /playlists/{id}:
+    delete:
+      description: Soft delete a specific playlist by its ID (songs remain unaffected)
+      parameters:
+      - description: Playlist ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete playlist by ID
+      tags:
+      - playlists
+    get:
+      description: Retrieve a specific playlist by its ID for the authenticated user
+      parameters:
+      - description: Playlist ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.PlaylistResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get playlist by ID
+      tags:
+      - playlists
+    put:
+      consumes:
+      - application/json
+      description: Update a specific playlist by its ID for the authenticated user
+      parameters:
+      - description: Playlist ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated playlist data
+        in: body
+        name: playlist
+        required: true
+        schema:
+          $ref: '#/definitions/models.PlaylistCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.PlaylistResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update playlist by ID
+      tags:
+      - playlists
   /playlists/addPlaylist:
     post:
       consumes:
@@ -442,6 +732,164 @@ paths:
       summary: Get all playlists
       tags:
       - playlists
+  /playlists/search:
+    get:
+      description: Search playlists by name with fuzzy matching
+      parameters:
+      - description: Search query (searches playlist name)
+        in: query
+        name: q
+        type: string
+      - description: Search by playlist name
+        in: query
+        name: name
+        type: string
+      - description: 'Limit results (default: 20, max: 100)'
+        in: query
+        name: limit
+        type: integer
+      - description: 'Offset for pagination (default: 0)'
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Search playlists
+      tags:
+      - playlists
+  /songs/{id}:
+    delete:
+      description: Soft delete a specific song by its ID for the authenticated user
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete song by ID
+      tags:
+      - songs
+    get:
+      description: Retrieve a specific song by its ID for the authenticated user
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SongResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get song by ID
+      tags:
+      - songs
+    put:
+      consumes:
+      - application/json
+      description: Update a specific song by its ID for the authenticated user
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated song data
+        in: body
+        name: song
+        required: true
+        schema:
+          $ref: '#/definitions/models.SongCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SongResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update song by ID
+      tags:
+      - songs
   /songs/addSong:
     post:
       consumes:
@@ -506,6 +954,61 @@ paths:
       security:
       - BearerAuth: []
       summary: Get all songs
+      tags:
+      - songs
+  /songs/search:
+    get:
+      description: Search songs by title, duration, or album with fuzzy matching
+      parameters:
+      - description: Search query (searches title, duration)
+        in: query
+        name: q
+        type: string
+      - description: Search by title
+        in: query
+        name: title
+        type: string
+      - description: Search by album ID
+        in: query
+        name: album_id
+        type: integer
+      - description: Minimum duration in milliseconds
+        in: query
+        name: min_duration
+        type: integer
+      - description: Maximum duration in milliseconds
+        in: query
+        name: max_duration
+        type: integer
+      - description: 'Limit results (default: 20, max: 100)'
+        in: query
+        name: limit
+        type: integer
+      - description: 'Offset for pagination (default: 0)'
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Search songs
       tags:
       - songs
 securityDefinitions:
