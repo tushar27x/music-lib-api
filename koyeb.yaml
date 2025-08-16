@@ -11,7 +11,7 @@ service:
     - name: PORT
       value: "8080"
     - name: PROD_HOST
-      value: your-app-name.koyeb.app
+      value: independent-carlene-tushar27x-a3461680.koyeb.app.app
     - name: DB_URI
       secret: db-uri
     - name: JWT_SECRET
