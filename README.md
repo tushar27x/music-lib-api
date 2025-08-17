@@ -132,14 +132,12 @@ Generate Swagger docs for different environments:
 **Windows:**
 ```cmd
 scripts\generate-swagger.bat production
-scripts\generate-swagger.bat staging
 scripts\generate-swagger.bat development
 ```
 
 **Linux/Mac:**
 ```bash
 ./scripts/generate-swagger.sh production
-./scripts/generate-swagger.sh staging
 ./scripts/generate-swagger.sh development
 ```
 
@@ -289,8 +287,7 @@ ENVIRONMENT=production ./music-api
 ```
 
 For detailed deployment instructions, see:
-- [DEPLOYMENT.md](./DEPLOYMENT.md) - Complete deployment guide
-- [DEPLOYMENT-SIMPLE.md](./DEPLOYMENT-SIMPLE.md) - Simplified deployment guide
+- [DEPLOYMENT-SIMPLE.md](./DEPLOYMENT-SIMPLE.md) - Simplified deployment guide (no staging environment required)
 
 ## 🤝 Contributing
 
